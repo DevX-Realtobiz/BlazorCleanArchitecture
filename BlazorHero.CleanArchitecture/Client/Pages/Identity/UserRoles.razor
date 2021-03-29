@@ -1,0 +1,25 @@
+﻿@page "/identity/user-roles/{Id}"
+@attribute [Authorize(Policy = Permissions.Roles.View)]
+@inject Microsoft.Extensions.Localization.IStringLocalizer<UserRoles> localizer
+<HeroTitle Title="@Title" Description="@Description" />
+<MudTable Hover="true" Elevation="25" Items="UserRolesList">
+    <ToolBarContent>
+        <div class="justify-center mud-text-align-center">
+            @if ((_authorizationService.AuthorizeAsync(CurrentUser, Permissions.Roles.Create)).Result.Succeeded)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="SaveAsync" ButtonType="ButtonType.Submit">@localizer["Update User Roles"]</MudButton>
+            }
+        </div>
+        <MudToolBarSpacer />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["Role Name"]</MudTh>
+        <MudTh>@localizer["Status"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.RoleName</MudTd>
+        <MudTd DataLabel="Role"><MudCheckBox @bind-Checked="@context.Selected" Color="Color.Secondary"></MudCheckBox></MudTd>
+    </RowTemplate>
+    <PagerContent>
+    </PagerContent>
+</MudTable>

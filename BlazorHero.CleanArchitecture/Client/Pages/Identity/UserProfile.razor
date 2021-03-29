@@ -1,0 +1,71 @@
+﻿@page "/user-profile/{Id}"
+@inject Microsoft.Extensions.Localization.IStringLocalizer<UserProfile> localizer
+<HeroTitle Title="@Title" Description="@Description" />
+<MudGrid>
+    <AuthorizeView Roles="Administrator">
+        <MudItem xs="12" sm="12" md="12">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body1">@localizer["Administrator Settings."]</MudText>
+                        <MudText Typo="Typo.body2">@localizer["This is an Administrator Only View."]</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent Class="pa-46" Style="padding:26px!important">
+                    <MudGrid>
+                        <MudCheckBox @bind-Checked="@Active" Label="@localizer["Active?"]" Color="Color.Primary"></MudCheckBox>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="ToggleUserStatus" ButtonType="ButtonType.Submit">@localizer["Save Changes"]</MudButton>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </AuthorizeView>
+    <MudItem xs="12" sm="4" md="3">
+        <MudCard Elevation="25">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText>@localizer["Profile"]</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex justify-center mb-4">
+                    @if (!string.IsNullOrEmpty(@ImageDataUrl))
+                    {
+                        <MudAvatar Image="@ImageDataUrl" Style="height:250px; width:250px;"> </MudAvatar>
+                    }
+                    else
+                    {
+                        <MudAvatar Color="Color.Secondary" Style="height:250px; width:250px;">@FirstLetterOfName</MudAvatar>
+                    }
+                </div>
+                <MudText Typo="Typo.h6" Align="Align.Center">@FirstName @LastName</MudText>
+                <MudText Align="Align.Center">@Email</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="8" md="9">
+        <MudCard Elevation="25">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText>@localizer["Public Profile"]</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudField Label="@localizer["First Name"]" Variant="Variant.Text">@FirstName</MudField>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudField Label="@localizer["Last Name"]" Variant="Variant.Text">@LastName</MudField>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudField Label="@localizer["Phone Number"]" Variant="Variant.Text">@PhoneNumber</MudField>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudField Label="@localizer["Email"]" Variant="Variant.Text">@Email</MudField>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>

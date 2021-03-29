@@ -1,0 +1,34 @@
+﻿@page "/identity/roles"
+@using BlazorHero.CleanArchitecture.Application.Responses.Identity
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Roles> localizer
+<HeroTitle Title="@localizer["Roles"]" Description="@localizer["Manage Roles."]" />
+<MudTable Hover="true" Elevation="25" Items="RoleList" Filter="new Func<RoleResponse, bool>(Search)" @bind-role="role">
+    <ToolBarContent>
+        <div class="justify-center mud-text-align-center">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="(()=>InvokeModal())">@localizer["Create"]</MudButton>
+            <MudButton Variant="Variant.Filled" OnClick="GetRolesAsync" Color="Color.Secondary">@localizer["Reload"]</MudButton>
+        </div>
+
+        <MudToolBarSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="@localizer["Search for Roles..."]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>@localizer["Role"]</MudTh>
+        <MudTh Style="text-align:right">@localizer["Actions"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="@localizer["Role"]">@context.Name</MudTd>
+        <MudTd DataLabel="@localizer["Actions"]" Style="text-align:right">
+            <MudMenu Label="@localizer["Actions"]" Variant="Variant.Filled" DisableElevation="true" EndIcon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                <MudMenuItem @onclick="@(()=>ManagePermissions(@context.Id))">@localizer["Manage Permission"]</MudMenuItem>
+                <MudMenuItem @onclick="@(()=>InvokeModal(@context.Id))">@localizer["Edit"]</MudMenuItem>
+                <MudMenuItem @onclick="@(()=>Delete(@context.Id))">@localizer["Delete"]</MudMenuItem>
+            </MudMenu>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <TablePager />
+    </PagerContent>
+</MudTable>
